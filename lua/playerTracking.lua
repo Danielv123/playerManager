@@ -907,8 +907,6 @@ local function defaultSyncConditionCheck()
 			backupPlayerStuff(player)
 			table.insert(global.playersToImport, player.name)
 			player.print("Preparing profile sync...")
-		else
-			global.playersToSyncOnConnect[player.name] = true
 		end
 	end
 
@@ -922,7 +920,6 @@ script.on_init(function()
 	global.playersToImport = {}
 	global.playersToExport = ""
 	global.inventory_types = {}
-	global.playersToSyncOnConnect = {}
 	global.inventorySynced = {} -- array of player_index=>bool
 	global.inventorySyncEnabled = true
 	do
@@ -942,14 +939,9 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 		return
 	end
 
-	-- will be true if player had already played on this server when sync was enabled
-	player_data = global.playersToSyncOnConnect[player.name]
-	if player_data then
-        local player = game.players[event.player_index]
-        table.insert(global.playersToImport, player.name)
-        player.print("Registered you joining the game, preparing profile sync...")
-		global.playersToSyncOnConnect[player.name] = nil
-	end
+    local player = game.players[event.player_index]
+    table.insert(global.playersToImport, player.name)
+    player.print("Registered you joining the game, preparing profile sync...")
 end)
 
 script.on_event(defines.events.on_player_left_game, function(event)
@@ -970,7 +962,6 @@ remote.add_interface("playerManager", {
 	end,
 	disableInventorySync = function()
 		global.inventorySyncEnabled = false
-        global.playersToSyncOnConnect = {}
 	end,
 	runCode = function(code)
 		load(code, "playerTracking code injection failed!", "t", _ENV)()
