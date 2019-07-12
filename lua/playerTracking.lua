@@ -945,14 +945,9 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 	-- will be true if player had already played on this server when sync was enabled
 	player_data = global.playersToSyncOnConnect[player.name]
 	if player_data then
-		if type(player_data) == "table" then
-			deserialize_player(player, unpack(player_data))
-			player.print("Registered you joining the game, syncing profile...")
-		else
-			local player = game.players[event.player_index]
-			table.insert(global.playersToImport, player.name)
-			player.print("Registered you joining the game, preparing profile sync...")
-		end
+        local player = game.players[event.player_index]
+        table.insert(global.playersToImport, player.name)
+        player.print("Registered you joining the game, preparing profile sync...")
 		global.playersToSyncOnConnect[player.name] = nil
 	end
 end)
@@ -993,9 +988,6 @@ remote.add_interface("playerManager", {
 		    deserialize_player(player, invData, quickbarData, forceName, spectator, admin, color, chat_color, tag)
         else
             game.print("Player "..playerName.." left before they could get their inventory!")
-            global.playersToSyncOnConnect[playerName] = {
-                invData, quickbarData, forceName, spectator, admin, color, chat_color, tag
-            }
         end
 	end,
 	resetInvImportQueue = function()
