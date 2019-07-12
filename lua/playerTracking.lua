@@ -275,6 +275,50 @@ local function serialize_player(player)
 	return playerData
 end
 
+local function deserialize_player(player)
+	player.ticks_to_respawn = nil
+	local ok, invTable = serpent.load(invData)
+	local ok, quickbarTable = serpent.load(quickbarData)
+
+	global.inventorySynced= global.inventorySynced or {}
+
+	if global.inventorySynced[player.index] == nil then
+		backupPlayerStuff(player)
+	end
+
+	-- sync misc details
+	player.force = forceName
+	player.spectator = spectator
+	player.admin = admin
+	player.color = color
+	player.chat_color = chat_color
+	player.tag = tag
+
+	-- Clear old inventories
+	player.get_inventory(defines.inventory.character_guns).clear()
+	player.get_inventory(defines.inventory.character_ammo).clear()
+	player.get_inventory(defines.inventory.character_trash).clear()
+	player.get_inventory(defines.inventory.character_main).clear()
+	-- clear armor last to avoid inventory spilling
+	player.get_inventory(defines.inventory.character_armor).clear()
+
+	-- 3: pistol.
+	deserialize_inventory(player.get_inventory(defines.inventory.character_guns), invTable[3])
+	-- 4: Ammo.
+	deserialize_inventory(player.get_inventory(defines.inventory.character_ammo), invTable[4])
+	-- 5: armor.
+	deserialize_inventory(player.get_inventory(defines.inventory.character_armor), invTable[5])
+	-- 8: express-transport-belt (trash slots)
+	deserialize_inventory(player.get_inventory(defines.inventory.character_trash), invTable[8])
+	-- 1: Main inventory (do that AFTER armor, otherwise there won't be space)
+	deserialize_inventory(player.get_inventory(defines.inventory.character_main), invTable[1])
+
+	deserialize_quickbar(player, quickbarTable)
+
+	player.print("Inventory synchronized.")
+	global.inventorySynced[player.index] = true
+end
+
 
 -- event helpers
 local function rockets_launched()
@@ -302,9 +346,13 @@ local function defaultSyncConditionCheck()
 	if rockets_launched() == 0 and enemies_left() > 0 then return end
 
 	for _, player in pairs(game.players) do
-		backupPlayerStuff(player)
-		table.insert(global.playersToImport, player.name)
-		player.print("Preparing profile sync...")
+		if player.connected then
+			backupPlayerStuff(player)
+			table.insert(global.playersToImport, player.name)
+			player.print("Preparing profile sync...")
+		else
+			global.playersToSyncOnConnect[player.name] = true
+		end
 	end
 
 	global.inventorySyncEnabled = true
@@ -315,6 +363,7 @@ script.on_init(function()
 	global.playersToImport = {}
 	global.playersToExport = ""
 	global.inventory_types = {}
+	global.playersToSyncOnConnect = {}
 	global.inventorySynced = {} -- array of player_index=>bool
 	global.inventorySyncEnabled = true
 	do
@@ -334,9 +383,19 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 		return
 	end
 
-	local player = game.players[event.player_index]
-	table.insert(global.playersToImport, player.name)
-	player.print("Registered you joining the game, preparing profile sync...")
+	-- will be true if player had already played on this server when sync was enabled
+	player_data = global.playersToSyncOnConnect[player.name]
+	if player_data then
+		if type(player_data) == "table" then
+			deserialize_player(player, unpack(player_data))
+			player.print("Registered you joining the game, syncing profile...")
+		else
+			local player = game.players[event.player_index]
+			table.insert(global.playersToImport, player.name)
+			player.print("Registered you joining the game, preparing profile sync...")
+		end
+		global.playersToSyncOnConnect[player.name] = nil
+	end
 end)
 
 script.on_event(defines.events.on_player_left_game, function(event)
@@ -357,6 +416,7 @@ remote.add_interface("playerManager", {
 	end,
 	disableInventorySync = function()
 		global.inventorySyncEnabled = false
+        global.playersToSyncOnConnect = {}
 	end,
 	runCode = function(code)
 		load(code, "playerTracking code injection failed!", "t", _ENV)()
@@ -370,52 +430,14 @@ remote.add_interface("playerManager", {
 	end,
 	importInventory = function(playerName, invData, quickbarData, forceName, spectator, admin, color, chat_color, tag)
 		local player = game.players[playerName]
-		if player then
-
-			player.ticks_to_respawn = nil
-			local ok, invTable = serpent.load(invData)
-			local ok, quickbarTable = serpent.load(quickbarData)
-
-			global.inventorySynced= global.inventorySynced or {}
-
-			if global.inventorySynced[player.index] == nil then
-				backupPlayerStuff(player)
-			end
-
-			-- sync misc details
-			player.force = forceName
-			player.spectator = spectator
-			player.admin = admin
-			player.color = color
-			player.chat_color = chat_color
-			player.tag = tag
-			
-			-- Clear old inventories
-			player.get_inventory(defines.inventory.character_guns).clear()
-			player.get_inventory(defines.inventory.character_ammo).clear()
-			player.get_inventory(defines.inventory.character_trash).clear()
-			player.get_inventory(defines.inventory.character_main).clear()
-			-- clear armor last to avoid inventory spilling
-			player.get_inventory(defines.inventory.character_armor).clear()
-			
-			-- 3: pistol.
-			deserialize_inventory(player.get_inventory(defines.inventory.character_guns), invTable[3])
-			-- 4: Ammo.
-			deserialize_inventory(player.get_inventory(defines.inventory.character_ammo), invTable[4])
-			-- 5: armor.
-			deserialize_inventory(player.get_inventory(defines.inventory.character_armor), invTable[5])
-			-- 8: express-transport-belt (trash slots)
-			deserialize_inventory(player.get_inventory(defines.inventory.character_trash), invTable[8])
-			-- 1: Main inventory (do that AFTER armor, otherwise there won't be space)
-			deserialize_inventory(player.get_inventory(defines.inventory.character_main), invTable[1])
-
-			deserialize_quickbar(player, quickbarTable)
-			
-			player.print("Inventory synchronized.")
-			global.inventorySynced[player.index] = true
-		else
-			game.print("Player "..playerName.." left before they could get their inventory!")
-		end
+        if player and player.connected then
+		    deserialize_player(player, invData, quickbarData, forceName, spectator, admin, color, chat_color, tag)
+        else
+            game.print("Player "..playerName.." left before they could get their inventory!")
+            global.playersToSyncOnConnect[playerName] = {
+                invData, quickbarData, forceName, spectator, admin, color, chat_color, tag
+            }
+        end
 	end,
 	resetInvImportQueue = function()
 		global.playersToImport = {}
@@ -436,7 +458,7 @@ remote.add_interface("playerManager", {
 		game.permissions.get_group(permissionGroupName).add_player(playerName)
 		if permissionGroupName == "Admin" then
 			game.players[playerName].admin = true
-		end			
+		end
 	end,
 	-- Creates permission group definitions.
 	createPermissionGroups = function()
@@ -622,18 +644,18 @@ remote.add_interface("playerManager", {
 		permission_group.set_allows_action(defines.input_action.use_item,true)
 		permission_group.set_allows_action(defines.input_action.wire_dragging,true)
 		permission_group.set_allows_action(defines.input_action.write_to_console,true)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 		log('Loading Permission Group Admin...')
-		permissions_group = game.permissions.get_group('Admin') 
-		if not permissions_group then 
+		permissions_group = game.permissions.get_group('Admin')
+		if not permissions_group then
 			permission_group = game.permissions.create_group('Admin')
 		end
-	
+
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.activate_copy,true)
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.activate_cut,true)
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.activate_paste,true)
@@ -811,14 +833,14 @@ remote.add_interface("playerManager", {
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.use_item,true)
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.wire_dragging,true)
 		game.permissions.get_group('Admin').set_allows_action(defines.input_action.write_to_console,true)
-	
-	
-	
-	
+
+
+
+
 		log('Loading Permission Group Standard...')
-		permissions_group = game.permissions.get_group('Standard') 
-		if not permissions_group then 
-			permission_group = game.permissions.create_group('Standard') 
+		permissions_group = game.permissions.get_group('Standard')
+		if not permissions_group then
+			permission_group = game.permissions.create_group('Standard')
 		end
 		game.permissions.get_group('Standard').set_allows_action(defines.input_action.activate_copy,true)
 		game.permissions.get_group('Standard').set_allows_action(defines.input_action.activate_cut,true)
