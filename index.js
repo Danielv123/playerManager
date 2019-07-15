@@ -49,7 +49,6 @@ module.exports = class remoteCommands {
 						if(this.syncingInventoryTries > 5) {
 							console.log('Warning: Inventory syncing slow. Tries: ' + this.syncingInventoryTries);
 						}
-						return;
 					}
 					this.syncingInventory = true;
 					do {
