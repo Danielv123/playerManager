@@ -1088,10 +1088,12 @@ remote.remove_interface("playerManager")
 remote.add_interface("playerManager", {
 	enableInventorySync = function()
 		global.inventorySyncEnabled = true
+		global.defaultPermissionsGroupSetup = false
 		createPermissionGroupsLocal()
 	end,
 	disableInventorySync = function()
 		global.inventorySyncEnabled = false
+		global.defaultPermissionsGroupSetup = false
 		createPermissionGroupsLocal()
 	end,
 	runCode = function(code)
@@ -1192,7 +1194,7 @@ remote.add_interface("playerManager", {
 		setPlayerPermissionGroupLocal(playerName, permissionGroupName)
 	end,
 	-- Creates permission group definitions.
-	createPermissionGroups = function()		
+	createPermissionGroups = function()
 		createPermissionGroupsLocal();
 	end,
 	batchWhitelist = function(whitelistJson)
