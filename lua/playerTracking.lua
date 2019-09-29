@@ -538,24 +538,30 @@ local function setAdminPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.wire_dragging,true)
 	permission_group.set_allows_action(defines.input_action.write_to_console,true)
 end
-local function createPermissionGroupsLocal()		
-	if not game.permissions.get_group('Admin')  then 
-		game.permissions.create_group('Admin')
+local function createPermissionGroupsLocal()
+	if not global.defaultPermissionsGroupSetup then global.defaultPermissionsGroupSetup = false end
+	
+	-- We should never touch the permissions again after they have been setup once, this causes confusion when server admins change permissions in-game to find they reset.
+	if not global.defaultPermissionsGroupSetup then
+		global.defaultPermissionsGroupSetup = true
+		if not game.permissions.get_group('Admin')  then 
+			game.permissions.create_group('Admin')
+		end
+		if not game.permissions.get_group('Standard')  then 
+			game.permissions.create_group('Standard')
+		end
+		if global.inventorySyncEnabled == true then
+			log('Loading Permission Group Default using restricted permissions...')
+			setRestrictedPermissions(game.permissions.get_group('Default'))		
+		else
+			log('Loading Permission Group Default using normal permissions...')
+			setNormalPermissions(game.permissions.get_group('Default'))
+		end
+		log('Loading Permission Group Standard...')
+		setNormalPermissions(game.permissions.get_group('Standard'))
+		log('Loading Permission Group Admin...')
+		setAdminPermissions(game.permissions.get_group('Admin'))
 	end
-	if not game.permissions.get_group('Standard')  then 
-		game.permissions.create_group('Standard')
-	end
-	if global.inventorySyncEnabled == true then
-		log('Loading Permission Group Default using restricted permissions...')
-		setRestrictedPermissions(game.permissions.get_group('Default'))			
-	else
-		log('Loading Permission Group Default using normal permissions...')
-		setNormalPermissions(game.permissions.get_group('Default'))
-	end		
-	log('Loading Permission Group Standard...')
-	setNormalPermissions(game.permissions.get_group('Standard'))
-	log('Loading Permission Group Admin...')
-	setAdminPermissions(game.permissions.get_group('Admin'))
 end
 
 local function setPlayerPermissionGroupLocal(playerName, permissionGroupName)
