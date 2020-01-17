@@ -178,7 +178,7 @@ local function setRestrictedPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.use_artillery_remote,false)
 	permission_group.set_allows_action(defines.input_action.use_item,false)
 	permission_group.set_allows_action(defines.input_action.wire_dragging,false)
-	permission_group.set_allows_action(defines.input_action.write_to_console,false)
+	permission_group.set_allows_action(defines.input_action.write_to_console,true)
 end
 local function setNormalPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.activate_copy,true)
@@ -198,7 +198,7 @@ local function setNormalPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.cancel_craft,true)
 	permission_group.set_allows_action(defines.input_action.cancel_deconstruct,true)
 	permission_group.set_allows_action(defines.input_action.cancel_new_blueprint,true)
-	permission_group.set_allows_action(defines.input_action.cancel_research,false)
+	permission_group.set_allows_action(defines.input_action.cancel_research,true)
 	permission_group.set_allows_action(defines.input_action.cancel_upgrade,true)
 	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_crafting,true)
 	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_filters,true)
@@ -538,35 +538,27 @@ local function setAdminPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.wire_dragging,true)
 	permission_group.set_allows_action(defines.input_action.write_to_console,true)
 end
-local function createPermissionGroupsLocal()
-	if not global.defaultPermissionsGroupSetup then global.defaultPermissionsGroupSetup = false end
-	
-	-- We should never touch the permissions again after they have been setup once, this causes confusion when server admins change permissions in-game to find they reset.
-	if not global.defaultPermissionsGroupSetup then
-		global.defaultPermissionsGroupSetup = true
-		if not game.permissions.get_group('Admin')  then 
-			game.permissions.create_group('Admin')
-		end
-		if not game.permissions.get_group('Standard')  then 
-			game.permissions.create_group('Standard')
-		end
-		if global.inventorySyncEnabled == true then
-			log('Loading Permission Group Default using restricted permissions...')
-			setRestrictedPermissions(game.permissions.get_group('Default'))		
-		else
-			log('Loading Permission Group Default using normal permissions...')
-			setNormalPermissions(game.permissions.get_group('Default'))
-		end
-		log('Loading Permission Group Standard...')
-		setNormalPermissions(game.permissions.get_group('Standard'))
-		log('Loading Permission Group Admin...')
-		setAdminPermissions(game.permissions.get_group('Admin'))
+local function createPermissionGroupsLocal()		
+	if not game.permissions.get_group('Admin')  then 
+		game.permissions.create_group('Admin')
 	end
+	if not game.permissions.get_group('Standard')  then 
+		game.permissions.create_group('Standard')
+	end
+	if global.inventorySyncEnabled == true then
+		log('Loading Permission Group Default using restricted permissions...')
+		setRestrictedPermissions(game.permissions.get_group('Default'))			
+	else
+		log('Loading Permission Group Default using normal permissions...')
+		setNormalPermissions(game.permissions.get_group('Default'))
+	end		
+	log('Loading Permission Group Standard...')
+	setNormalPermissions(game.permissions.get_group('Standard'))
+	log('Loading Permission Group Admin...')
+	setAdminPermissions(game.permissions.get_group('Admin'))
 end
 
 local function setPlayerPermissionGroupLocal(playerName, permissionGroupName)
-	-- if player is admin, dont change group. This is to stop the whitelist
-	-- from overwriting the admin list.
 	local player = game.permissions.get_group("Admin").players[playerName]
 	if player then return end
 	if not game.players[playerName] then return end
@@ -577,12 +569,7 @@ local function setPlayerPermissionGroupLocal(playerName, permissionGroupName)
 end
 
 local function backupPlayerStuff(player)
---	if not (player and player.character) then
---		return
---	end
-
 	if player.online_time < 60 * 60 * 10 then
-		-- don't generate a corpse-chest if the player was fresh on the server
 		return
 	end
 
@@ -657,6 +644,11 @@ end
 local function deserialize_grid(grid, data)
 	grid.clear()
 	local names, energy, shield, xs, ys = data.names, data.energy, data.shield, data.xs, data.ys
+	local inv = nil
+	if data.inv then
+		inv = data.inv
+	end
+	
 	for i = 1, #names do
 		local equipment = grid.put({
 			name = names[i],
@@ -669,6 +661,15 @@ local function deserialize_grid(grid, data)
 			end
 			if energy[i] > 0 then
 				equipment.energy = energy[i]
+			end
+			if inv then
+				if equipment.burner then
+					for _,insert in pairs(inv[i]) do
+						if equipment.burner.inventory.can_insert(insert) then
+							equipment.burner.inventory.insert(insert)
+						end
+					end
+				end
 			end
 		end
 	end
@@ -695,8 +696,7 @@ local function deserialize_inventory(inventory, data)
 			slot.ammo = item_ammos[idx]
 		end
 		local label = item_labels[idx]
-		-- We got a crash on line 1 of this IF statement with AAI programmable vehicles's unit-remote-control item where label = {allow_manual_label_change = true}
-		-- we attempt to fix this by checking slot.is_item_with_label, but we have no idea if this property is set properly. Label syncing might be broken.
+
 		if label and slot.is_item_with_label then
 			slot.label = label.label
 			slot.label_color = label.label_color
@@ -726,8 +726,6 @@ local function deserialize_inventory(inventory, data)
 	end
 end
 
--- functions for exporting a players data
---[[Misc functions for serializing stuff]]
 local inventory_types = {}
 do
 	local map = {}
@@ -740,7 +738,7 @@ do
 	table.sort(inventory_types)
 end
 local function serialize_equipment_grid(grid)
-	local names, energy, shield, xs, ys = {}, {}, {}, {}, {}
+	local names, energy, shield, xs, ys, inv = {}, {}, {}, {}, {}, {}
 
 	local position = {0,0}
 	local width, height = grid.width, grid.height
@@ -765,6 +763,16 @@ local function serialize_equipment_grid(grid)
 					shield[idx] = equipment.shield
 					xs[idx] = x
 					ys[idx] = y
+
+					if equipment.burner then
+						local tmparr = {}
+						for itm, amt in pairs(equipment.burner.inventory.get_contents()) do
+							tmparr[#tmparr+1] = {name=itm, count=amt}
+						end						
+						inv[idx] = tmparr
+					else
+						inv[idx] = ""
+					end
 				end
 			end
 		end
@@ -775,9 +783,10 @@ local function serialize_equipment_grid(grid)
 		shield = shield,
 		xs = xs,
 		ys = ys,
+		inv = inv,
 	}
 end
---[[ serialize an inventory ]]
+
 local function serialize_inventory(inventory)
 	local filters
 	if inventory.supports_filters() then
@@ -795,17 +804,14 @@ local function serialize_inventory(inventory)
 		if slot.valid_for_read then
 			if slot.is_blueprint or slot.is_blueprint_book or slot.is_upgrade_item
 					or slot.is_deconstruction_item or slot.is_item_with_tags then
-				local success, export = pcall(slot.export_stack)
-				if not success then
-					-- print("failed to export item")
-				else
-					item_exports[i] = export
+				if not (slot.is_blueprint or slot.is_blueprint_book) then
+					local success, export = pcall(slot.export_stack)
+					if success then
+						item_exports[i] = export
+					end
 				end
 			elseif slot.is_item_with_inventory then
-				-- print("sending items with inventory is not allowed")
 			elseif slot.is_selection_tool then
-				-- ignore, until we know how to handle it
-				-- modded onces will need to interact with their mod, so not that easy
 			else
 				item_names[i] = slot.name
 				item_counts[i] = slot.count
@@ -861,9 +867,7 @@ end
 local function deserialize_quickbar(player, quickbar)
 	for index, name in ipairs(quickbar) do
 		if name ~= "" then
-			if ( game.entity_prototypes[name] or game.item_prototypes[name] ) then
-				player.set_quick_bar_slot(index, name)
-			end
+			player.set_quick_bar_slot(index, name)
 		else
 			player.set_quick_bar_slot(index, nil)
 		end
@@ -893,11 +897,7 @@ local function deserialize_requests(player, requests)
 	local next = next
 	for i = 1, player.character.request_slot_count do
 		if requests[i] and (next(requests[i]) ~= nil) then
-			if ( game.entity_prototypes[requests[i].name] or game.item_prototypes[requests[i].name]) then
-				player.character.set_request_slot(requests[i].name, i)
-			else
-				log ( "[PlayerManager]-deserialize_requests: Unable to figure out what " .. requests[i].name .. " is, so it was skipped" )
-			end
+			player.character.set_request_slot(requests[i], i)
 		else
 			player.character.clear_request_slot(i)
 		end
@@ -923,15 +923,13 @@ end
 local function serialize_player(player)
 	local seed = game.surfaces[1].map_gen_settings.seed
 	local playerData = ""
-	--[[ Collect info about the player for identification ]]
 	playerData = playerData .. "|name:"..player.name.."~index:"..player.index.."~connected:"..tostring(player.connected)
 	playerData = playerData .. "~r:"..tostring(player.color.r).."~g:"..tostring(player.color.g).."~b:"..tostring(player.color.b).."~a:"..tostring(player.color.a)
 	playerData = playerData .. "~cr:"..tostring(player.chat_color.r).."~cg:"..tostring(player.chat_color.g).."~cb:"..tostring(player.chat_color.b).."~ca:"..tostring(player.chat_color.a)
 	playerData = playerData .. "~tag:"..tostring(player.tag)
-	--[[ Collect players system information ]]
 	playerData = playerData .. "~displayWidth:"..player.display_resolution.width.."~displayHeight:"..player.display_resolution.height.."~displayScale:"..player.display_scale
 	
-	--[[ Collect game/tool specific information from player ]]
+
 	playerData = playerData .. "~afkTime"..seed..":"..player.afk_time.."~onlineTime"..seed..":"..player.online_time.."~admin:"..tostring(player.admin).."~spectator:"..tostring(player.spectator)
 	playerData = playerData .. "~forceName:"..player.force.name
 	
@@ -957,8 +955,6 @@ local function serialize_player(player)
 	return playerData
 end
 
-
--- event helpers
 local function rockets_launched()
 	return game.forces["player"].rockets_launched
 end
@@ -979,8 +975,9 @@ local function defaultSyncConditionCheck(event)
 		for _, player in pairs(game.connected_players ) do
 			if global.inventorySynced[player.name] == true then
 				if global.inventoryLastSyncTick[player.name] == nil or global.inventoryLastSyncTick[player.name] < event.tick - (60*60) then
-					--global.playersToExport = global.playersToExport .. serialize_player(player)
-					game.write_file(outputFile, "EXPORT" .. serialize_player(player) .. "\n", true, 0)
+
+				        local export = serialize_player(player)
+				        game.write_file(outputFile, "EXPORT" .. export .. "\n", true, 0)
 				end
 			end
 		end
@@ -989,16 +986,9 @@ local function defaultSyncConditionCheck(event)
 
 	local newArray = {}	for k,v in pairs(global.inventorySynced) do if k ~= tonumber(k) then newArray[k] = v end end
 
-
-	-- if rockets_launched() == 0 then return end
-	-- if enemies_left() > 0 then return end
-
 	if rockets_launched() == 0 and enemies_left() > 0 then return end
 
 	for _, player in pairs(game.connected_players ) do
--- should get called when the inventory gets synced anyway. so don't do it here and twice
---			backupPlayerStuff(player)
-			--table.insert(global.playersToImport, player.name)
 			game.write_file(outputFile, "IMPORT" .. player.name .. "\n", true, 0)
 			player.print("Preparing profile sync...")
 	end
@@ -1010,10 +1000,8 @@ end
 script.on_nth_tick(60, defaultSyncConditionCheck)
 
 script.on_init(function()
-	--global.playersToImport = {}
-	--global.playersToExport = ""
 	global.inventory_types = {}
-	global.inventorySynced = {} -- array of player_index=>bool
+	global.inventorySynced = {}
 	global.inventorySyncEnabled = true
 	global.inventoryLastSyncTick = {}
 	do
@@ -1042,7 +1030,6 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 	end
 	if global.inventorySyncEnabled then
 		if global.inventorySynced and not(global.inventorySynced[player.name] == nil) then
-			-- clear the inv if it was synced before to prevent duping
 			clearInventory(player)
 			if player.admin then player.print("Admin-Notice: Inventory sync enabled, player has synced before on server. Clearing inventory.") end
 		else
@@ -1058,12 +1045,9 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 			player.print("inventorySyncEnabled=" .. inventorySyncEnabledStr .. ", player exists in inventorySynced: " .. invSyncedForPlayer)
 		end
 	end
-	--table.insert(global.playersToImport, player.name)
 	game.write_file(outputFile, "IMPORT" .. player.name .. "\n", true, 0)
 	player.print("Registered you joining the game, preparing profile sync...")
 end)
-
--- script.on_event(defines.events.on_player_left_game, function(event) end)
 
 script.on_event(defines.events.on_pre_player_left_game, function(event)
 	if not(event and event.player_index) then
@@ -1076,9 +1060,9 @@ script.on_event(defines.events.on_pre_player_left_game, function(event)
 	if not (global.inventorySynced and global.inventorySynced[player.name] == true) then
 		return
 	end
-	--global.playersToExport = global.playersToExport .. serialize_player(player)
 
-	game.write_file(outputFile, "EXPORT" .. serialize_player(player) .. "\n", true, 0)
+	local export = serialize_player(player)
+	game.write_file(outputFile, "EXPORT" .. export .. "\n", true, 0)
 
 	log("Registered "..player.name.." leaving the game, preparing for upload...")
 	global.inventorySynced[player.name] = false
@@ -1088,23 +1072,17 @@ remote.remove_interface("playerManager")
 remote.add_interface("playerManager", {
 	enableInventorySync = function()
 		global.inventorySyncEnabled = true
-		global.defaultPermissionsGroupSetup = false
 		createPermissionGroupsLocal()
 	end,
 	disableInventorySync = function()
 		global.inventorySyncEnabled = false
-		global.defaultPermissionsGroupSetup = false
 		createPermissionGroupsLocal()
 	end,
 	runCode = function(code)
 		load(code, "playerTracking code injection failed!", "t", _ENV)()
 	end,
 	getImportTask = function()
-		-- if #global.playersToImport >= 1 then
-		-- 	local playerName = table.remove(global.playersToImport, 1)
-		-- 	rcon.print(playerName)
-		-- 	game.print("Downloading account for "..playerName.."...")
-		-- end
+
 	end,
 	importInventory = function(playerName, invData, quickbarData, requestsData, trashData, forceName, spectator, admin, color, chat_color, tag)
 		local player = game.players[playerName]
@@ -1117,7 +1095,6 @@ remote.add_interface("playerManager", {
 			return
 		end
 		if not player.connected then
-			-- don't bother
 			return
 		end
 		local status, err = pcall(function()
@@ -1133,7 +1110,6 @@ remote.add_interface("playerManager", {
 				backupPlayerStuff(player)
 			end
 
-			-- sync misc details
 			player.force = forceName
 			player.spectator = spectator
 			player.admin = admin
@@ -1142,18 +1118,12 @@ remote.add_interface("playerManager", {
 			player.tag = tag
 			
 			if invTable then
-				-- Clear old inventories
 				clearInventory(player)
 
-				-- 3: pistol.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_guns), invTable[3] or {})
-				-- 4: Ammo.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_ammo), invTable[4] or {})
-				-- 5: armor.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_armor), invTable[5] or {})
-				-- 8: express-transport-belt (trash slots)
 				deserialize_inventory(player.get_inventory(defines.inventory.character_trash), invTable[8] or {})
-				-- 1: Main inventory (do that AFTER armor, otherwise there won't be space)
 				deserialize_inventory(player.get_inventory(defines.inventory.character_main), invTable[1] or {})
 			else
 				player.print("Your inventory was lost due to an error")
@@ -1184,24 +1154,19 @@ remote.add_interface("playerManager", {
 		global.playersToImport = {}
 	end,
 	exportPlayers = function()
-		-- if global.playersToExport and string.len(global.playersToExport) > 10 then
-		--         rcon.print(global.playersToExport)
-		-- 	log("Exported player profiles")
-		-- 	global.playersToExport = ""
-		-- end
+
 	end,
 	setPlayerPermissionGroup = function(playerName, permissionGroupName)
 		setPlayerPermissionGroupLocal(playerName, permissionGroupName)
 	end,
-	-- Creates permission group definitions.
-	createPermissionGroups = function()
+
+	createPermissionGroups = function()		
 		createPermissionGroupsLocal();
 	end,
 	batchWhitelist = function(whitelistJson)
 		local whitelist = game.json_to_table(whitelistJson)
 		log("Whitelist batch processing "..#whitelist.." players...")
 		for _, playerName in pairs(whitelist) do
-			--log("Whitelisting player '"..playerName.."'")
 			setPlayerPermissionGroupLocal(playerName, "Standard")
 		end
 		log("Whitelist batch done")
@@ -1210,7 +1175,6 @@ remote.add_interface("playerManager", {
 		local banlist = game.json_to_table(banlistJson)
 		log("Banlist batch processing "..#banlist.." players...")
 		for _, banlistItem in pairs(banlist) do
-			--log("Banning player '"..banlistItem.factorioName.."'")
 			game.ban_player(banlistItem.factorioName)
 		end
 		log("Banlist batch done")
