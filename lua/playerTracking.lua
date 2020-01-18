@@ -683,6 +683,7 @@ local function deserialize_inventory(inventory, data)
 	local item_exports = data.item_exports or {}
 	local item_labels = data.item_labels or {}
 	local item_grids = data.item_grids or {}
+
 	for idx, name in pairs(item_names) do
 		local slot = inventory[idx]
 		slot.set_stack({
@@ -933,6 +934,12 @@ local function serialize_player(player)
 	playerData = playerData .. "~afkTime"..seed..":"..player.afk_time.."~onlineTime"..seed..":"..player.online_time.."~admin:"..tostring(player.admin).."~spectator:"..tostring(player.spectator)
 	playerData = playerData .. "~forceName:"..player.force.name
 	
+	local mods = {}
+	if remote.interfaces["RPG"] and remote.interfaces["RPG"]["CopyPlayerStats"] then
+		mods["rpg_system"] = remote.call('RPG', 'CopyPlayerStats', player.name)
+	end
+	playerData = playerData .. "~mods:"..serpent.line(mods)
+	
 	local inventories = {}
 	for _, inventory_type in pairs(inventory_types) do
 		local inventory = player.get_inventory(inventory_type)
@@ -1084,7 +1091,7 @@ remote.add_interface("playerManager", {
 	getImportTask = function()
 
 	end,
-	importInventory = function(playerName, invData, quickbarData, requestsData, trashData, forceName, spectator, admin, color, chat_color, tag)
+	importInventory = function(playerName, modData, invData, quickbarData, requestsData, trashData, forceName, spectator, admin, color, chat_color, tag)
 		local player = game.players[playerName]
 		if not player then
 			game.print("Player "..playerName.." left before they could get their inventory!")
@@ -1103,8 +1110,21 @@ remote.add_interface("playerManager", {
 			local quickbarTable = loadPlayerData(quickbarData, "quickbarData", player)
 			local requestsTable = loadPlayerData(requestsData, "requestsData", player)
 			local trashTable = loadPlayerData(trashData, "trashData", player)
+			local modTable = loadPlayerData(modData, "modData", player)
 
-			global.inventorySynced= global.inventorySynced or {}
+			local rpg_system = modTable["rpg_system"] or {}
+			if remote.interfaces["RPG"] and remote.interfaces["RPG"]["CopyPlayerStats"] then
+				log("AGN: RPG_System mod found and CopyPlayerStats found also, attempting to write PlayerStats")
+				if rpg_system and rpg_system.character_attribs then
+					log("AGN: Calling RPG System now")
+					remote.call ("RPG", "PastePlayerStats", playerName, rpg_system)
+					log("AGN: Stats updated!")
+				else
+					log("AGN: No saved stats found in " .. serpent.line(modTable["rpg_system"]))
+				end
+			end
+
+			global.inventorySynced = global.inventorySynced or {}
 
 			if global.inventorySynced[player.name] == nil then
 				backupPlayerStuff(player)
