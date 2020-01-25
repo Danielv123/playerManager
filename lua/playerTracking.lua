@@ -11,45 +11,45 @@ local function setRestrictedPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.alt_select_area,false)
 	permission_group.set_allows_action(defines.input_action.alt_select_blueprint_entities,false)
 	permission_group.set_allows_action(defines.input_action.alternative_copy,false)
-	permission_group.set_allows_action(defines.input_action.begin_mining,true)
-	permission_group.set_allows_action(defines.input_action.begin_mining_terrain,true)
-	permission_group.set_allows_action(defines.input_action.build_item,true)
+	permission_group.set_allows_action(defines.input_action.begin_mining,false)
+	permission_group.set_allows_action(defines.input_action.begin_mining_terrain,false)
+	permission_group.set_allows_action(defines.input_action.build_item,false)
 	permission_group.set_allows_action(defines.input_action.build_rail,false)
 	permission_group.set_allows_action(defines.input_action.build_terrain,false)
-	permission_group.set_allows_action(defines.input_action.cancel_craft,true)
-	permission_group.set_allows_action(defines.input_action.cancel_deconstruct,true)
-	permission_group.set_allows_action(defines.input_action.cancel_new_blueprint,true)
+	permission_group.set_allows_action(defines.input_action.cancel_craft,false)
+	permission_group.set_allows_action(defines.input_action.cancel_deconstruct,false)
+	permission_group.set_allows_action(defines.input_action.cancel_new_blueprint,false)
 	permission_group.set_allows_action(defines.input_action.cancel_research,false)
-	permission_group.set_allows_action(defines.input_action.cancel_upgrade,true)
-	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_crafting,true)
-	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_filters,true)
-	permission_group.set_allows_action(defines.input_action.change_active_quick_bar,true)
+	permission_group.set_allows_action(defines.input_action.cancel_upgrade,false)
+	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_crafting,false)
+	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_filters,false)
+	permission_group.set_allows_action(defines.input_action.change_active_quick_bar,false)
 	permission_group.set_allows_action(defines.input_action.change_arithmetic_combinator_parameters,false)
 	permission_group.set_allows_action(defines.input_action.change_blueprint_book_record_label,false)
 	permission_group.set_allows_action(defines.input_action.change_decider_combinator_parameters,false)
 	permission_group.set_allows_action(defines.input_action.change_item_label,false)
 	permission_group.set_allows_action(defines.input_action.change_multiplayer_config,false)
-	permission_group.set_allows_action(defines.input_action.change_picking_state,true)
+	permission_group.set_allows_action(defines.input_action.change_picking_state,false)
 	permission_group.set_allows_action(defines.input_action.change_programmable_speaker_alert_parameters,false)
 	permission_group.set_allows_action(defines.input_action.change_programmable_speaker_circuit_parameters,false)
 	permission_group.set_allows_action(defines.input_action.change_programmable_speaker_parameters,false)
-	permission_group.set_allows_action(defines.input_action.change_riding_state,true)
-	permission_group.set_allows_action(defines.input_action.change_shooting_state,true)
+	permission_group.set_allows_action(defines.input_action.change_riding_state,false)
+	permission_group.set_allows_action(defines.input_action.change_shooting_state,false)
 	permission_group.set_allows_action(defines.input_action.change_single_blueprint_record_label,false)
 	permission_group.set_allows_action(defines.input_action.change_train_stop_station,false)
 	permission_group.set_allows_action(defines.input_action.change_train_wait_condition,false)
 	permission_group.set_allows_action(defines.input_action.change_train_wait_condition_data,false)
-	permission_group.set_allows_action(defines.input_action.clean_cursor_stack,true)
+	permission_group.set_allows_action(defines.input_action.clean_cursor_stack,false)
 	permission_group.set_allows_action(defines.input_action.clear_selected_blueprint,false)
 	permission_group.set_allows_action(defines.input_action.clear_selected_deconstruction_item,false)
 	permission_group.set_allows_action(defines.input_action.clear_selected_upgrade_item,false)
 	permission_group.set_allows_action(defines.input_action.connect_rolling_stock,false)
-	permission_group.set_allows_action(defines.input_action.copy,true)
-	permission_group.set_allows_action(defines.input_action.copy_entity_settings,true)
-	permission_group.set_allows_action(defines.input_action.craft,true)
+	permission_group.set_allows_action(defines.input_action.copy,false)
+	permission_group.set_allows_action(defines.input_action.copy_entity_settings,false)
+	permission_group.set_allows_action(defines.input_action.craft,false)
 	permission_group.set_allows_action(defines.input_action.create_blueprint_like,false)
-	permission_group.set_allows_action(defines.input_action.cursor_split,true)
-	permission_group.set_allows_action(defines.input_action.cursor_transfer,true)
+	permission_group.set_allows_action(defines.input_action.cursor_split,false)
+	permission_group.set_allows_action(defines.input_action.cursor_transfer,false)
 	permission_group.set_allows_action(defines.input_action.custom_input,false)
 	permission_group.set_allows_action(defines.input_action.cycle_blueprint_book_backwards,false)
 	permission_group.set_allows_action(defines.input_action.cycle_blueprint_book_forwards,false)
@@ -68,116 +68,116 @@ local function setRestrictedPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.edit_custom_tag,false)
 	permission_group.set_allows_action(defines.input_action.edit_permission_group,false)
 	permission_group.set_allows_action(defines.input_action.export_blueprint,false)
-	permission_group.set_allows_action(defines.input_action.fast_entity_split,true)
-	permission_group.set_allows_action(defines.input_action.fast_entity_transfer,true)
-	permission_group.set_allows_action(defines.input_action.go_to_train_station,true)
+	permission_group.set_allows_action(defines.input_action.fast_entity_split,false)
+	permission_group.set_allows_action(defines.input_action.fast_entity_transfer,false)
+	permission_group.set_allows_action(defines.input_action.go_to_train_station,false)
 	permission_group.set_allows_action(defines.input_action.grab_blueprint_record,false)
-	permission_group.set_allows_action(defines.input_action.gui_checked_state_changed,true)
-	permission_group.set_allows_action(defines.input_action.gui_click,true)
-	permission_group.set_allows_action(defines.input_action.gui_elem_changed,true)
-	permission_group.set_allows_action(defines.input_action.gui_selection_state_changed,true)
-	permission_group.set_allows_action(defines.input_action.gui_text_changed,true)
-	permission_group.set_allows_action(defines.input_action.gui_value_changed,true)
+	permission_group.set_allows_action(defines.input_action.gui_checked_state_changed,false)
+	permission_group.set_allows_action(defines.input_action.gui_click,false)
+	permission_group.set_allows_action(defines.input_action.gui_elem_changed,false)
+	permission_group.set_allows_action(defines.input_action.gui_selection_state_changed,false)
+	permission_group.set_allows_action(defines.input_action.gui_text_changed,false)
+	permission_group.set_allows_action(defines.input_action.gui_value_changed,false)
 	permission_group.set_allows_action(defines.input_action.import_blueprint,false)
 	permission_group.set_allows_action(defines.input_action.import_blueprint_string,false)
 	permission_group.set_allows_action(defines.input_action.import_permissions_string,false)
-	permission_group.set_allows_action(defines.input_action.inventory_split,true)
-	permission_group.set_allows_action(defines.input_action.inventory_transfer,true)
+	permission_group.set_allows_action(defines.input_action.inventory_split,false)
+	permission_group.set_allows_action(defines.input_action.inventory_transfer,false)
 	permission_group.set_allows_action(defines.input_action.launch_rocket,false)
 	permission_group.set_allows_action(defines.input_action.lua_shortcut,false)
 	permission_group.set_allows_action(defines.input_action.map_editor_action,false)
 	permission_group.set_allows_action(defines.input_action.market_offer,false)
 	permission_group.set_allows_action(defines.input_action.mod_settings_changed,false)
-	permission_group.set_allows_action(defines.input_action.open_achievements_gui,true)
+	permission_group.set_allows_action(defines.input_action.open_achievements_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_blueprint_library_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_blueprint_record,false)
 	permission_group.set_allows_action(defines.input_action.open_bonus_gui,false)
-	permission_group.set_allows_action(defines.input_action.open_character_gui,true)
-	permission_group.set_allows_action(defines.input_action.open_equipment,true)
-	permission_group.set_allows_action(defines.input_action.open_gui,true)
-	permission_group.set_allows_action(defines.input_action.open_item,true)
-	permission_group.set_allows_action(defines.input_action.open_kills_gui,true)
-	permission_group.set_allows_action(defines.input_action.open_logistic_gui,true)
-	permission_group.set_allows_action(defines.input_action.open_mod_item,true)
-	permission_group.set_allows_action(defines.input_action.open_production_gui,true)
-	permission_group.set_allows_action(defines.input_action.open_technology_gui,true)
+	permission_group.set_allows_action(defines.input_action.open_character_gui,false)
+	permission_group.set_allows_action(defines.input_action.open_equipment,false)
+	permission_group.set_allows_action(defines.input_action.open_gui,false)
+	permission_group.set_allows_action(defines.input_action.open_item,false)
+	permission_group.set_allows_action(defines.input_action.open_kills_gui,false)
+	permission_group.set_allows_action(defines.input_action.open_logistic_gui,false)
+	permission_group.set_allows_action(defines.input_action.open_mod_item,false)
+	permission_group.set_allows_action(defines.input_action.open_production_gui,false)
+	permission_group.set_allows_action(defines.input_action.open_technology_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_train_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_train_station_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_trains_gui,false)
 	permission_group.set_allows_action(defines.input_action.open_tutorials_gui,false)
 	permission_group.set_allows_action(defines.input_action.paste_entity_settings,false)
-	permission_group.set_allows_action(defines.input_action.place_equipment,true)
-	permission_group.set_allows_action(defines.input_action.quick_bar_pick_slot,true)
-	permission_group.set_allows_action(defines.input_action.quick_bar_set_selected_page,true)
-	permission_group.set_allows_action(defines.input_action.quick_bar_set_slot,true)
+	permission_group.set_allows_action(defines.input_action.place_equipment,false)
+	permission_group.set_allows_action(defines.input_action.quick_bar_pick_slot,false)
+	permission_group.set_allows_action(defines.input_action.quick_bar_set_selected_page,false)
+	permission_group.set_allows_action(defines.input_action.quick_bar_set_slot,false)
 	permission_group.set_allows_action(defines.input_action.remove_cables,false)
 	permission_group.set_allows_action(defines.input_action.remove_train_station,false)
 	permission_group.set_allows_action(defines.input_action.reset_assembling_machine,false)
-	permission_group.set_allows_action(defines.input_action.rotate_entity,true)
-	permission_group.set_allows_action(defines.input_action.select_area,true)
+	permission_group.set_allows_action(defines.input_action.rotate_entity,false)
+	permission_group.set_allows_action(defines.input_action.select_area,false)
 	permission_group.set_allows_action(defines.input_action.select_blueprint_entities,false)
-	permission_group.set_allows_action(defines.input_action.select_entity_slot,true)
-	permission_group.set_allows_action(defines.input_action.select_item,true)
-	permission_group.set_allows_action(defines.input_action.select_mapper_slot,true)
-	permission_group.set_allows_action(defines.input_action.select_next_valid_gun,true)
-	permission_group.set_allows_action(defines.input_action.select_tile_slot,true)
+	permission_group.set_allows_action(defines.input_action.select_entity_slot,false)
+	permission_group.set_allows_action(defines.input_action.select_item,false)
+	permission_group.set_allows_action(defines.input_action.select_mapper_slot,false)
+	permission_group.set_allows_action(defines.input_action.select_next_valid_gun,false)
+	permission_group.set_allows_action(defines.input_action.select_tile_slot,false)
 	permission_group.set_allows_action(defines.input_action.set_auto_launch_rocket,false)
 	permission_group.set_allows_action(defines.input_action.set_autosort_inventory,false)
 	permission_group.set_allows_action(defines.input_action.set_behavior_mode,false)
-	permission_group.set_allows_action(defines.input_action.set_car_weapons_control,true)
+	permission_group.set_allows_action(defines.input_action.set_car_weapons_control,false)
 	permission_group.set_allows_action(defines.input_action.set_circuit_condition,false)
 	permission_group.set_allows_action(defines.input_action.set_circuit_mode_of_operation,false)
 	permission_group.set_allows_action(defines.input_action.set_deconstruction_item_tile_selection_mode,false)
 	permission_group.set_allows_action(defines.input_action.set_deconstruction_item_trees_and_rocks_only,false)
-	permission_group.set_allows_action(defines.input_action.set_entity_color,true)
+	permission_group.set_allows_action(defines.input_action.set_entity_color,false)
 	permission_group.set_allows_action(defines.input_action.set_entity_energy_property,false)
-	permission_group.set_allows_action(defines.input_action.set_filter,true)
+	permission_group.set_allows_action(defines.input_action.set_filter,false)
 	permission_group.set_allows_action(defines.input_action.set_heat_interface_mode,false)
 	permission_group.set_allows_action(defines.input_action.set_heat_interface_temperature,false)
 	permission_group.set_allows_action(defines.input_action.set_infinity_container_filter_item,false)
 	permission_group.set_allows_action(defines.input_action.set_infinity_container_remove_unfiltered_items,false)
 	permission_group.set_allows_action(defines.input_action.set_infinity_pipe_filter,false)
 	permission_group.set_allows_action(defines.input_action.set_inserter_max_stack_size,false)
-	permission_group.set_allows_action(defines.input_action.set_inventory_bar,true)
-	permission_group.set_allows_action(defines.input_action.set_logistic_filter_item,true)
-	permission_group.set_allows_action(defines.input_action.set_logistic_filter_signal,true)
-	permission_group.set_allows_action(defines.input_action.set_logistic_trash_filter_item,true)
-	permission_group.set_allows_action(defines.input_action.set_request_from_buffers,true)
+	permission_group.set_allows_action(defines.input_action.set_inventory_bar,false)
+	permission_group.set_allows_action(defines.input_action.set_logistic_filter_item,false)
+	permission_group.set_allows_action(defines.input_action.set_logistic_filter_signal,false)
+	permission_group.set_allows_action(defines.input_action.set_logistic_trash_filter_item,false)
+	permission_group.set_allows_action(defines.input_action.set_request_from_buffers,false)
 	permission_group.set_allows_action(defines.input_action.set_research_finished_stops_game,false)
-	permission_group.set_allows_action(defines.input_action.set_signal,true)
+	permission_group.set_allows_action(defines.input_action.set_signal,false)
 	permission_group.set_allows_action(defines.input_action.set_single_blueprint_record_icon,false)
-	permission_group.set_allows_action(defines.input_action.set_splitter_priority,true)
+	permission_group.set_allows_action(defines.input_action.set_splitter_priority,false)
 	permission_group.set_allows_action(defines.input_action.set_train_stopped,false)
-	permission_group.set_allows_action(defines.input_action.setup_assembling_machine,true)
+	permission_group.set_allows_action(defines.input_action.setup_assembling_machine,false)
 	permission_group.set_allows_action(defines.input_action.setup_blueprint,false)
 	permission_group.set_allows_action(defines.input_action.setup_single_blueprint_record,false)
-	permission_group.set_allows_action(defines.input_action.smart_pipette,true)
-	permission_group.set_allows_action(defines.input_action.stack_split,true)
-	permission_group.set_allows_action(defines.input_action.stack_transfer,true)
-	permission_group.set_allows_action(defines.input_action.start_repair,true)
+	permission_group.set_allows_action(defines.input_action.smart_pipette,false)
+	permission_group.set_allows_action(defines.input_action.stack_split,false)
+	permission_group.set_allows_action(defines.input_action.stack_transfer,false)
+	permission_group.set_allows_action(defines.input_action.start_repair,false)
 	permission_group.set_allows_action(defines.input_action.start_research,false)
 	permission_group.set_allows_action(defines.input_action.start_walking,true)
-	permission_group.set_allows_action(defines.input_action.stop_building_by_moving,true)
+	permission_group.set_allows_action(defines.input_action.stop_building_by_moving,false)
 	permission_group.set_allows_action(defines.input_action.switch_connect_to_logistic_network,false)
 	permission_group.set_allows_action(defines.input_action.switch_constant_combinator_state,false)
 	permission_group.set_allows_action(defines.input_action.switch_inserter_filter_mode_state,false)
 	permission_group.set_allows_action(defines.input_action.switch_power_switch_state,false)
 	permission_group.set_allows_action(defines.input_action.switch_to_rename_stop_gui,false)
-	permission_group.set_allows_action(defines.input_action.take_equipment,true)
+	permission_group.set_allows_action(defines.input_action.take_equipment,false)
 	permission_group.set_allows_action(defines.input_action.toggle_deconstruction_item_entity_filter_mode,false)
 	permission_group.set_allows_action(defines.input_action.toggle_deconstruction_item_tile_filter_mode,false)
 	permission_group.set_allows_action(defines.input_action.toggle_driving,false)
-	permission_group.set_allows_action(defines.input_action.toggle_enable_vehicle_logistics_while_moving,true)
-	permission_group.set_allows_action(defines.input_action.toggle_equipment_movement_bonus,true)
+	permission_group.set_allows_action(defines.input_action.toggle_enable_vehicle_logistics_while_moving,false)
+	permission_group.set_allows_action(defines.input_action.toggle_equipment_movement_bonus,false)
 	permission_group.set_allows_action(defines.input_action.toggle_map_editor,false)
-	permission_group.set_allows_action(defines.input_action.toggle_personal_roboport,true)
-	permission_group.set_allows_action(defines.input_action.toggle_show_entity_info,true)
-	permission_group.set_allows_action(defines.input_action.undo,true)
+	permission_group.set_allows_action(defines.input_action.toggle_personal_roboport,false)
+	permission_group.set_allows_action(defines.input_action.toggle_show_entity_info,false)
+	permission_group.set_allows_action(defines.input_action.undo,false)
 	permission_group.set_allows_action(defines.input_action.upgrade,false)
 	permission_group.set_allows_action(defines.input_action.upgrade_opened_blueprint,false)
 	permission_group.set_allows_action(defines.input_action.use_artillery_remote,false)
-	permission_group.set_allows_action(defines.input_action.use_item,true)
-	permission_group.set_allows_action(defines.input_action.wire_dragging,true)
+	permission_group.set_allows_action(defines.input_action.use_item,false)
+	permission_group.set_allows_action(defines.input_action.wire_dragging,false)
 	permission_group.set_allows_action(defines.input_action.write_to_console,true)
 end
 local function setNormalPermissions(permission_group)
@@ -198,7 +198,7 @@ local function setNormalPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.cancel_craft,true)
 	permission_group.set_allows_action(defines.input_action.cancel_deconstruct,true)
 	permission_group.set_allows_action(defines.input_action.cancel_new_blueprint,true)
-	permission_group.set_allows_action(defines.input_action.cancel_research,false)
+	permission_group.set_allows_action(defines.input_action.cancel_research,true)
 	permission_group.set_allows_action(defines.input_action.cancel_upgrade,true)
 	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_crafting,true)
 	permission_group.set_allows_action(defines.input_action.change_active_item_group_for_filters,true)
@@ -334,7 +334,7 @@ local function setNormalPermissions(permission_group)
 	permission_group.set_allows_action(defines.input_action.stack_split,true)
 	permission_group.set_allows_action(defines.input_action.stack_transfer,true)
 	permission_group.set_allows_action(defines.input_action.start_repair,true)
-	permission_group.set_allows_action(defines.input_action.start_research,false)
+	permission_group.set_allows_action(defines.input_action.start_research,true)
 	permission_group.set_allows_action(defines.input_action.start_walking,true)
 	permission_group.set_allows_action(defines.input_action.stop_building_by_moving,true)
 	permission_group.set_allows_action(defines.input_action.switch_connect_to_logistic_network,true)
@@ -559,8 +559,6 @@ local function createPermissionGroupsLocal()
 end
 
 local function setPlayerPermissionGroupLocal(playerName, permissionGroupName)
-	-- if player is admin, dont change group. This is to stop the whitelist
-	-- from overwriting the admin list.
 	local player = game.permissions.get_group("Admin").players[playerName]
 	if player then return end
 	if not game.players[playerName] then return end
@@ -571,12 +569,7 @@ local function setPlayerPermissionGroupLocal(playerName, permissionGroupName)
 end
 
 local function backupPlayerStuff(player)
---	if not (player and player.character) then
---		return
---	end
-
 	if player.online_time < 60 * 60 * 10 then
-		-- don't generate a corpse-chest if the player was fresh on the server
 		return
 	end
 
@@ -651,6 +644,11 @@ end
 local function deserialize_grid(grid, data)
 	grid.clear()
 	local names, energy, shield, xs, ys = data.names, data.energy, data.shield, data.xs, data.ys
+	local inv = nil
+	if data.inv then
+		inv = data.inv
+	end
+	
 	for i = 1, #names do
 		local equipment = grid.put({
 			name = names[i],
@@ -664,6 +662,15 @@ local function deserialize_grid(grid, data)
 			if energy[i] > 0 then
 				equipment.energy = energy[i]
 			end
+			if inv then
+				if equipment.burner then
+					for _,insert in pairs(inv[i]) do
+						if equipment.burner.inventory.can_insert(insert) then
+							equipment.burner.inventory.insert(insert)
+						end
+					end
+				end
+			end
 		end
 	end
 end
@@ -676,6 +683,7 @@ local function deserialize_inventory(inventory, data)
 	local item_exports = data.item_exports or {}
 	local item_labels = data.item_labels or {}
 	local item_grids = data.item_grids or {}
+
 	for idx, name in pairs(item_names) do
 		local slot = inventory[idx]
 		slot.set_stack({
@@ -689,8 +697,7 @@ local function deserialize_inventory(inventory, data)
 			slot.ammo = item_ammos[idx]
 		end
 		local label = item_labels[idx]
-		-- We got a crash on line 1 of this IF statement with AAI programmable vehicles's unit-remote-control item where label = {allow_manual_label_change = true}
-		-- we attempt to fix this by checking slot.is_item_with_label, but we have no idea if this property is set properly. Label syncing might be broken.
+
 		if label and slot.is_item_with_label then
 			slot.label = label.label
 			slot.label_color = label.label_color
@@ -699,7 +706,9 @@ local function deserialize_inventory(inventory, data)
 
 		local grid = item_grids[idx]
 		if grid then
-			deserialize_grid(slot.grid, grid)
+			if ( slot.grid ) then
+				deserialize_grid(slot.grid, grid)
+			end
 		end
 	end
 	for idx, str in pairs(item_exports) do
@@ -718,8 +727,6 @@ local function deserialize_inventory(inventory, data)
 	end
 end
 
--- functions for exporting a players data
---[[Misc functions for serializing stuff]]
 local inventory_types = {}
 do
 	local map = {}
@@ -732,7 +739,7 @@ do
 	table.sort(inventory_types)
 end
 local function serialize_equipment_grid(grid)
-	local names, energy, shield, xs, ys = {}, {}, {}, {}, {}
+	local names, energy, shield, xs, ys, inv = {}, {}, {}, {}, {}, {}
 
 	local position = {0,0}
 	local width, height = grid.width, grid.height
@@ -757,6 +764,16 @@ local function serialize_equipment_grid(grid)
 					shield[idx] = equipment.shield
 					xs[idx] = x
 					ys[idx] = y
+
+					if equipment.burner then
+						local tmparr = {}
+						for itm, amt in pairs(equipment.burner.inventory.get_contents()) do
+							tmparr[#tmparr+1] = {name=itm, count=amt}
+						end						
+						inv[idx] = tmparr
+					else
+						inv[idx] = ""
+					end
 				end
 			end
 		end
@@ -767,9 +784,10 @@ local function serialize_equipment_grid(grid)
 		shield = shield,
 		xs = xs,
 		ys = ys,
+		inv = inv,
 	}
 end
---[[ serialize an inventory ]]
+
 local function serialize_inventory(inventory)
 	local filters
 	if inventory.supports_filters() then
@@ -787,17 +805,14 @@ local function serialize_inventory(inventory)
 		if slot.valid_for_read then
 			if slot.is_blueprint or slot.is_blueprint_book or slot.is_upgrade_item
 					or slot.is_deconstruction_item or slot.is_item_with_tags then
-				local success, export = pcall(slot.export_stack)
-				if not success then
-					-- print("failed to export item")
-				else
-					item_exports[i] = export
+				if not (slot.is_blueprint or slot.is_blueprint_book) then
+					local success, export = pcall(slot.export_stack)
+					if success then
+						item_exports[i] = export
+					end
 				end
 			elseif slot.is_item_with_inventory then
-				-- print("sending items with inventory is not allowed")
 			elseif slot.is_selection_tool then
-				-- ignore, until we know how to handle it
-				-- modded onces will need to interact with their mod, so not that easy
 			else
 				item_names[i] = slot.name
 				item_counts[i] = slot.count
@@ -853,7 +868,9 @@ end
 local function deserialize_quickbar(player, quickbar)
 	for index, name in ipairs(quickbar) do
 		if name ~= "" then
-			player.set_quick_bar_slot(index, name)
+			if ( game.entity_prototypes[name] or game.item_prototypes[name] ) then
+				player.set_quick_bar_slot(index, name)
+			end
 		else
 			player.set_quick_bar_slot(index, nil)
 		end
@@ -883,7 +900,9 @@ local function deserialize_requests(player, requests)
 	local next = next
 	for i = 1, player.character.request_slot_count do
 		if requests[i] and (next(requests[i]) ~= nil) then
-			player.character.set_request_slot(requests[i], i)
+			if ( game.entity_prototypes[requests[i].name] or game.item_prototypes[requests[i].name]) then
+				player.character.set_request_slot(requests[i], i)
+			end
 		else
 			player.character.clear_request_slot(i)
 		end
@@ -909,17 +928,19 @@ end
 local function serialize_player(player)
 	local seed = game.surfaces[1].map_gen_settings.seed
 	local playerData = ""
-	--[[ Collect info about the player for identification ]]
 	playerData = playerData .. "|name:"..player.name.."~index:"..player.index.."~connected:"..tostring(player.connected)
 	playerData = playerData .. "~r:"..tostring(player.color.r).."~g:"..tostring(player.color.g).."~b:"..tostring(player.color.b).."~a:"..tostring(player.color.a)
 	playerData = playerData .. "~cr:"..tostring(player.chat_color.r).."~cg:"..tostring(player.chat_color.g).."~cb:"..tostring(player.chat_color.b).."~ca:"..tostring(player.chat_color.a)
 	playerData = playerData .. "~tag:"..tostring(player.tag)
-	--[[ Collect players system information ]]
 	playerData = playerData .. "~displayWidth:"..player.display_resolution.width.."~displayHeight:"..player.display_resolution.height.."~displayScale:"..player.display_scale
-	
-	--[[ Collect game/tool specific information from player ]]
 	playerData = playerData .. "~afkTime"..seed..":"..player.afk_time.."~onlineTime"..seed..":"..player.online_time.."~admin:"..tostring(player.admin).."~spectator:"..tostring(player.spectator)
 	playerData = playerData .. "~forceName:"..player.force.name
+	
+	local mods = {}
+	if remote.interfaces["RPG"] and remote.interfaces["RPG"]["CopyPlayerStats"] then
+		mods["rpg_system"] = remote.call('RPG', 'CopyPlayerStats', player.name)
+	end
+	playerData = playerData .. "~mods:"..serpent.line(mods)
 	
 	local inventories = {}
 	for _, inventory_type in pairs(inventory_types) do
@@ -943,8 +964,6 @@ local function serialize_player(player)
 	return playerData
 end
 
-
--- event helpers
 local function rockets_launched()
 	return game.forces["player"].rockets_launched
 end
@@ -965,8 +984,9 @@ local function defaultSyncConditionCheck(event)
 		for _, player in pairs(game.connected_players ) do
 			if global.inventorySynced[player.name] == true then
 				if global.inventoryLastSyncTick[player.name] == nil or global.inventoryLastSyncTick[player.name] < event.tick - (60*60) then
-					--global.playersToExport = global.playersToExport .. serialize_player(player)
-					game.write_file(outputFile, "EXPORT" .. serialize_player(player) .. "\n", true, 0)
+
+				        local export = serialize_player(player)
+				        game.write_file(outputFile, "EXPORT" .. export .. "\n", true, 0)
 				end
 			end
 		end
@@ -975,16 +995,9 @@ local function defaultSyncConditionCheck(event)
 
 	local newArray = {}	for k,v in pairs(global.inventorySynced) do if k ~= tonumber(k) then newArray[k] = v end end
 
-
-	-- if rockets_launched() == 0 then return end
-	-- if enemies_left() > 0 then return end
-
 	if rockets_launched() == 0 and enemies_left() > 0 then return end
 
 	for _, player in pairs(game.connected_players ) do
--- should get called when the inventory gets synced anyway. so don't do it here and twice
---			backupPlayerStuff(player)
-			--table.insert(global.playersToImport, player.name)
 			game.write_file(outputFile, "IMPORT" .. player.name .. "\n", true, 0)
 			player.print("Preparing profile sync...")
 	end
@@ -996,10 +1009,8 @@ end
 script.on_nth_tick(60, defaultSyncConditionCheck)
 
 script.on_init(function()
-	--global.playersToImport = {}
-	--global.playersToExport = ""
 	global.inventory_types = {}
-	global.inventorySynced = {} -- array of player_index=>bool
+	global.inventorySynced = {}
 	global.inventorySyncEnabled = true
 	global.inventoryLastSyncTick = {}
 	do
@@ -1028,7 +1039,6 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 	end
 	if global.inventorySyncEnabled then
 		if global.inventorySynced and not(global.inventorySynced[player.name] == nil) then
-			-- clear the inv if it was synced before to prevent duping
 			clearInventory(player)
 			if player.admin then player.print("Admin-Notice: Inventory sync enabled, player has synced before on server. Clearing inventory.") end
 		else
@@ -1044,12 +1054,9 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 			player.print("inventorySyncEnabled=" .. inventorySyncEnabledStr .. ", player exists in inventorySynced: " .. invSyncedForPlayer)
 		end
 	end
-	--table.insert(global.playersToImport, player.name)
 	game.write_file(outputFile, "IMPORT" .. player.name .. "\n", true, 0)
 	player.print("Registered you joining the game, preparing profile sync...")
 end)
-
--- script.on_event(defines.events.on_player_left_game, function(event) end)
 
 script.on_event(defines.events.on_pre_player_left_game, function(event)
 	if not(event and event.player_index) then
@@ -1062,9 +1069,9 @@ script.on_event(defines.events.on_pre_player_left_game, function(event)
 	if not (global.inventorySynced and global.inventorySynced[player.name] == true) then
 		return
 	end
-	--global.playersToExport = global.playersToExport .. serialize_player(player)
 
-	game.write_file(outputFile, "EXPORT" .. serialize_player(player) .. "\n", true, 0)
+	local export = serialize_player(player)
+	game.write_file(outputFile, "EXPORT" .. export .. "\n", true, 0)
 
 	log("Registered "..player.name.." leaving the game, preparing for upload...")
 	global.inventorySynced[player.name] = false
@@ -1084,13 +1091,9 @@ remote.add_interface("playerManager", {
 		load(code, "playerTracking code injection failed!", "t", _ENV)()
 	end,
 	getImportTask = function()
-		-- if #global.playersToImport >= 1 then
-		-- 	local playerName = table.remove(global.playersToImport, 1)
-		-- 	rcon.print(playerName)
-		-- 	game.print("Downloading account for "..playerName.."...")
-		-- end
+
 	end,
-	importInventory = function(playerName, invData, quickbarData, requestsData, trashData, forceName, spectator, admin, color, chat_color, tag)
+	importInventory = function(playerName, modData, invData, quickbarData, requestsData, trashData, forceName, spectator, admin, color, chat_color, tag)
 		local player = game.players[playerName]
 		if not player then
 			game.print("Player "..playerName.." left before they could get their inventory!")
@@ -1101,7 +1104,6 @@ remote.add_interface("playerManager", {
 			return
 		end
 		if not player.connected then
-			-- don't bother
 			return
 		end
 		local status, err = pcall(function()
@@ -1110,14 +1112,26 @@ remote.add_interface("playerManager", {
 			local quickbarTable = loadPlayerData(quickbarData, "quickbarData", player)
 			local requestsTable = loadPlayerData(requestsData, "requestsData", player)
 			local trashTable = loadPlayerData(trashData, "trashData", player)
+			local modTable = loadPlayerData(modData, "modData", player)
 
-			global.inventorySynced= global.inventorySynced or {}
+			local rpg_system = modTable["rpg_system"] or {}
+			if remote.interfaces["RPG"] and remote.interfaces["RPG"]["CopyPlayerStats"] then
+				log("AGN: RPG_System mod found and CopyPlayerStats found also, attempting to write PlayerStats")
+				if rpg_system and rpg_system.character_attribs then
+					log("AGN: Calling RPG System now")
+					remote.call ("RPG", "PastePlayerStats", playerName, rpg_system)
+					log("AGN: Stats updated!")
+				else
+					log("AGN: No saved stats found in " .. serpent.line(modTable["rpg_system"]))
+				end
+			end
+
+			global.inventorySynced = global.inventorySynced or {}
 
 			if global.inventorySynced[player.name] == nil then
 				backupPlayerStuff(player)
 			end
 
-			-- sync misc details
 			player.force = forceName
 			player.spectator = spectator
 			player.admin = admin
@@ -1126,18 +1140,12 @@ remote.add_interface("playerManager", {
 			player.tag = tag
 			
 			if invTable then
-				-- Clear old inventories
 				clearInventory(player)
 
-				-- 3: pistol.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_guns), invTable[3] or {})
-				-- 4: Ammo.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_ammo), invTable[4] or {})
-				-- 5: armor.
 				deserialize_inventory(player.get_inventory(defines.inventory.character_armor), invTable[5] or {})
-				-- 8: express-transport-belt (trash slots)
 				deserialize_inventory(player.get_inventory(defines.inventory.character_trash), invTable[8] or {})
-				-- 1: Main inventory (do that AFTER armor, otherwise there won't be space)
 				deserialize_inventory(player.get_inventory(defines.inventory.character_main), invTable[1] or {})
 			else
 				player.print("Your inventory was lost due to an error")
@@ -1168,16 +1176,12 @@ remote.add_interface("playerManager", {
 		global.playersToImport = {}
 	end,
 	exportPlayers = function()
-		-- if global.playersToExport and string.len(global.playersToExport) > 10 then
-		--         rcon.print(global.playersToExport)
-		-- 	log("Exported player profiles")
-		-- 	global.playersToExport = ""
-		-- end
+
 	end,
 	setPlayerPermissionGroup = function(playerName, permissionGroupName)
 		setPlayerPermissionGroupLocal(playerName, permissionGroupName)
 	end,
-	-- Creates permission group definitions.
+
 	createPermissionGroups = function()		
 		createPermissionGroupsLocal();
 	end,
@@ -1185,7 +1189,6 @@ remote.add_interface("playerManager", {
 		local whitelist = game.json_to_table(whitelistJson)
 		log("Whitelist batch processing "..#whitelist.." players...")
 		for _, playerName in pairs(whitelist) do
-			--log("Whitelisting player '"..playerName.."'")
 			setPlayerPermissionGroupLocal(playerName, "Standard")
 		end
 		log("Whitelist batch done")
@@ -1194,7 +1197,6 @@ remote.add_interface("playerManager", {
 		local banlist = game.json_to_table(banlistJson)
 		log("Banlist batch processing "..#banlist.." players...")
 		for _, banlistItem in pairs(banlist) do
-			--log("Banning player '"..banlistItem.factorioName.."'")
 			game.ban_player(banlistItem.factorioName)
 		end
 		log("Banlist batch done")
