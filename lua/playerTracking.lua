@@ -868,7 +868,9 @@ end
 local function deserialize_quickbar(player, quickbar)
 	for index, name in ipairs(quickbar) do
 		if name ~= "" then
-			player.set_quick_bar_slot(index, name)
+			if ( game.entity_prototypes[name] or game.item_prototypes[name] ) then
+				player.set_quick_bar_slot(index, name)
+			end
 		else
 			player.set_quick_bar_slot(index, nil)
 		end
@@ -898,7 +900,9 @@ local function deserialize_requests(player, requests)
 	local next = next
 	for i = 1, player.character.request_slot_count do
 		if requests[i] and (next(requests[i]) ~= nil) then
-			player.character.set_request_slot(requests[i], i)
+			if ( game.entity_prototypes[requests[i].name] or game.item_prototypes[requests[i].name]) then
+				player.character.set_request_slot(requests[i], i)
+			end
 		else
 			player.character.clear_request_slot(i)
 		end
@@ -929,8 +933,6 @@ local function serialize_player(player)
 	playerData = playerData .. "~cr:"..tostring(player.chat_color.r).."~cg:"..tostring(player.chat_color.g).."~cb:"..tostring(player.chat_color.b).."~ca:"..tostring(player.chat_color.a)
 	playerData = playerData .. "~tag:"..tostring(player.tag)
 	playerData = playerData .. "~displayWidth:"..player.display_resolution.width.."~displayHeight:"..player.display_resolution.height.."~displayScale:"..player.display_scale
-	
-
 	playerData = playerData .. "~afkTime"..seed..":"..player.afk_time.."~onlineTime"..seed..":"..player.online_time.."~admin:"..tostring(player.admin).."~spectator:"..tostring(player.spectator)
 	playerData = playerData .. "~forceName:"..player.force.name
 	
